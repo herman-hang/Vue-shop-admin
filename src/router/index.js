@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
+import Welcome from '../components/Welcome.vue'
+import Users from '../components/user/users.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +15,15 @@ const routes = [{
   component: Login
 }, {
   path: '/home',
-  component: Home
+  component: Home,
+  redirect: '/welcome',
+  children: [{
+    path: '/welcome',
+    component: Welcome
+  }, {
+    path: '/users',
+    component: Users
+  }]
 }]
 
 const router = new VueRouter({
@@ -24,7 +34,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   //获取token
   const token = window.sessionStorage.getItem('token');
-  if (to.path == '/login') {
+  if (to.path === '/login') {
     //存在token直接重定向到后台首页
     if (token) {
       return next('/home');

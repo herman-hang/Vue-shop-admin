@@ -80,7 +80,7 @@ export default {
       });
     }
   }
-}
+};
 </script>
 
 <!-- scoped只在当前组件内生效 -->
