@@ -18,6 +18,7 @@ module.exports = {
     'spaced-comment':0,
     'prefer-const':0,
     'prefer-const':0,
-    'no-useless-escape':0
+    'no-useless-escape':0,
+    'vue/no-unused-vars':0
   }
 }
