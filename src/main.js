@@ -6,6 +6,9 @@ import './plugins/element.js'
 import './assets/css/global.css'
 // 导入字体图标
 import './assets/fonts/iconfont.css'
+//导入属性表格
+import ZkTable from 'vue-table-with-tree-grid'
+
 //导入axios
 import axios from 'axios'
 //挂载到原型对象上
@@ -18,6 +21,7 @@ axios.interceptors.request.use(config => {
   return config;
 })
 
+Vue.use(ZkTable)
 Vue.config.productionTip = false
 
 new Vue({

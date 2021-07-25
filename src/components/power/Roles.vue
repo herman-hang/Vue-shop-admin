@@ -45,7 +45,7 @@
         <el-table-column label="描述" prop="roleDesc"></el-table-column>
         <el-table-column label="操作" width="300px">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="editRoles(scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRole(scope.row)">删除</el-button>
             <el-button type="warning" size="mini" icon="el-icon-setting" @click="rightsTree(scope.row)">分配权限</el-button>
           </template>
@@ -82,6 +82,18 @@
         <el-button type="primary" @click="subAddRole">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 编辑角色 -->
+    <el-dialog title="编辑角色" :visible.sync="editRoleDialogVisible" width="50%" @close="editRoleClose">
+      <el-form :model="editRoleForm" :rules="editRoleRules" ref="editRoleRef" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="角色名称" prop="roleName"><el-input v-model="editRoleForm.roleName"></el-input></el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc"><el-input type="textarea" v-model="editRoleForm.roleDesc"></el-input></el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="subEditRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -110,6 +122,14 @@ export default {
       addRoleForm: {},
       //添加角色验证表单规则
       addRoleRules: {
+        roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
+      },
+      //编辑角色表单
+      editRoleForm: {},
+      //隐藏编辑角色对话框
+      editRoleDialogVisible: false,
+      //编辑角色表单验证
+      editRoleRules: {
         roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
       }
     };
@@ -250,6 +270,33 @@ export default {
             message: '已取消删除'
           });
         });
+    },
+    //编辑角色数据渲染
+    async editRoles(info) {
+      const { data: res } = await this.$http.get(`roles/${info.id}`);
+      if (res.meta.status !== 200) return this.$message.error('获取数据失败！');
+      this.editRoleForm = res.data;
+      //展现编辑角色对话框
+      this.editRoleDialogVisible = true;
+    },
+    //提交编辑分类表单数据
+    subEditRole() {
+      console.log(this.editRoleForm);
+      this.$refs.editRoleRef.validate(async valid => {
+        if (!valid) return;
+        const { data: res } = await this.$http.put(`roles/${this.editRoleForm.roleId}`, this.editRoleForm);
+        if (res.meta.status !== 200) return this.$message.error('更新失败！');
+        this.$message.success('更新成功！');
+        //更新列表
+        this.getRolesList();
+        //隐藏编辑角色对话框
+        this.editRoleDialogVisible = false;
+      });
+    },
+    //关闭角色对话框
+    editRoleClose() {
+      //重置表单
+      this.$refs.editRoleRef.resetFields();
     }
   }
 };
