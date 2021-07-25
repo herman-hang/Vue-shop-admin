@@ -12,10 +12,35 @@
       <!-- 搜索 -->
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-input placeholder="请输入搜索内容" v-model="queryInfo.query" clearable><el-button slot="append" icon="el-icon-search"></el-button></el-input>
+          <el-input placeholder="请输入搜索内容" v-model="queryInfo.query" clearable @clear="getGoodsList"><el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button></el-input>
         </el-col>
         <el-col :span="4"><el-button type="primary" @click="addGoodsDialog = true">添加商品</el-button></el-col>
       </el-row>
+
+      <!-- 表格 -->
+      <el-table :data="goodsList" border style="width: 100%">
+        <el-table-column prop="goods_id" label="ID"></el-table-column>
+        <el-table-column prop="goods_name" label="商品名称"></el-table-column>
+        <el-table-column prop="goods_price" label="商品价格"></el-table-column>
+        <el-table-column prop="goods_weight" label="商品重量"></el-table-column>
+        <el-table-column prop="add_time" label="创建时间"></el-table-column>
+        <el-table-column label="操作">
+          <template>
+            <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 10, 100]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
     </el-card>
   </div>
 </template>
@@ -34,11 +59,32 @@ export default {
         pagenum: 1,
         //每页显示多少条数据
         pagesize: 2
-      }
+      },
+      total: 0
     };
   },
-  created() {},
-  methods: {}
+  created() {
+    this.getGoodsList();
+  },
+  methods: {
+    //获取商品所有数据
+    async getGoodsList() {
+      const { data: res } = await this.$http.get('goods', { params: this.queryInfo });
+      if (res.meta.status !== 200) return this.$message.error('获取列表数据失败！');
+      this.goodsList = res.data.goods;
+      this.total = res.data.total;
+    },
+    //每页显示多少条信息监听事件
+    handleSizeChange(val) {
+      this.queryInfo.pagesize = val;
+      this.getGoodsList();
+    },
+    //当前页监听事件
+    handleCurrentChange(val) {
+      this.queryInfo.pagenum = val;
+      this.getGoodsList();
+    }
+  }
 };
 </script>
 

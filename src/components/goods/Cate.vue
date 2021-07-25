@@ -49,7 +49,15 @@
       <el-form :model="addCateForm" :rules="addCateRules" ref="addCateRef" label-width="100px">
         <el-form-item label="分类名称" prop="cat_name"><el-input v-model="addCateForm.cat_name"></el-input></el-form-item>
         <el-form-item label="父分类">
-          <el-cascader v-model="parentArray" :options="parentCateList" :props="parentCateProps" @change="parentCateChange" clearable></el-cascader>
+          <el-cascader
+            expand-trigger="hover"
+            v-model="parentArray"
+            :options="parentCateList"
+            :props="parentCateProps"
+            @change="parentCateChange"
+            clearable
+            change-on-select
+          ></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -125,7 +133,6 @@ export default {
       parentArray: [],
       //展现父分类列表的对象绑定
       parentCateProps: {
-        expandTrigger: 'hover',
         value: 'cat_id',
         label: 'cat_name',
         children: 'children'
