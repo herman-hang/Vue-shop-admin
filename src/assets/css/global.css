@@ -29,3 +29,19 @@ body,
 .zk-table {
 	margin-top: 10px;
 }
+
+.el-steps {
+	margin: 15px 0;
+}
+
+.el-step__title {
+	font-size: 12px
+}
+
+.el-steps {
+	justify-content: center;
+}
+
+.ql-editor{
+	min-height: 300px;
+}

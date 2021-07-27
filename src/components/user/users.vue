@@ -26,7 +26,11 @@
         <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="role_name" label="角色"></el-table-column>
-        <el-table-column prop="create_time" label="创建时间"></el-table-column>
+        <el-table-column prop="create_time" label="创建时间">
+          <template slot-scope="scope">
+            {{ scope.row.create_time | date }}
+          </template>
+        </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.mg_state" @change="userStatusChange(scope.row)"></el-switch>

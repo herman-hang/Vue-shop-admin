@@ -187,7 +187,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('获取数据失败！');
       //将整个字符串根据“ ”切割成数组
       res.data.forEach(item => {
-        item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : [];
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : [];
         //控制tag文本框的显示与隐藏
         item.inputVisible = false;
         item.inputValue = '';
@@ -300,7 +300,7 @@ export default {
       const { data: res } = await this.$http.put(`categories/${this.getCateId}/attributes/${row.attr_id}`, {
         attr_name: row.attr_name,
         attr_sel: this.activeName,
-        attr_vals: row.attr_vals.join(' ')
+        attr_vals: row.attr_vals.join(',')
       });
       if (res.meta.status !== 200) return this.$message.error('修改失败！');
       this.$message.success('修改成功！');
