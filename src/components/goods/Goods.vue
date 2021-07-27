@@ -79,6 +79,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('获取列表数据失败！');
       this.goodsList = res.data.goods;
       this.total = res.data.total;
+      console.log(this.goodsList);
     },
     //每页显示多少条信息监听事件
     handleSizeChange(val) {
