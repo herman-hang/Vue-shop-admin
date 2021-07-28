@@ -33,7 +33,7 @@
                   </el-col>
                   <el-col :span="18">
                     <!-- 渲染三级权限 -->
-                    <el-tag v-for="(item3, i3) in item2.children" :key="item3.id" type="warning" closable @close="removeTagThree(scope.row, item3.id)">{{ item3.authName }}</el-tag>
+                    <el-tag v-for="item3 in item2.children" :key="item3.id" type="warning" closable @close="removeTagThree(scope.row, item3.id)">{{ item3.authName }}</el-tag>
                   </el-col>
                 </el-row>
               </el-col>

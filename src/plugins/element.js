@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Timeline from './timeline/index.js'
 import {
   Button,
   Form,
@@ -80,7 +79,6 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
 Vue.use(Radio)
-Vue.use(Timeline)
 // 挂载在vue原型对象上
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
